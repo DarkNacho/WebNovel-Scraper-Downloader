@@ -4,3 +4,5 @@ ebooklib
 pydantic
 requests
 demjson3
+fpdf2
+pypdf2

@@ -1,11 +1,12 @@
-# WebNovel Scraper
+# WebNovel Scraper Downloader
 
-This project scrapes unlocked chapters from [WebNovel](www.webnovel.com) and compiles them into an EPUB book. 
+This project scrapes unlocked chapters from [WebNovel](www.webnovel.com) and compiles them into an EPUB book or a PDF for comics.
 
 ## Features
 
 - **Scrapes Unlocked Chapters Only**: The scraper gathers only Unlocked content by default.
-- **EPUB File Creation**: Compiles downloaded chapters into a single EPUB file for offline reading.
+- **EPUB File Creation**: Downloaded chapters of novels into a single EPUB file.
+- **PDF File Creation**: Downloaded chapters of comics into a single PDF file.
 
 ## Prerequisites
 
@@ -17,27 +18,31 @@ This project scrapes unlocked chapters from [WebNovel](www.webnovel.com) and com
 Install the required packages by running:
 
 ```sh
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Usage
 
-Run the scraper with the following command, replacing the URL with the novel's link:
+Run the scraper with the following command, replacing the URL with the novel's or comic's link:
 
 ```sh
-python main.py <URL> [-c COOKIES] [-o OUTPUT]
+$ python main.py <URL> [-c COOKIES] [-o OUTPUT]
 ```
 
 ### Arguments
 
-- `url`: The URL of the WebNovel book.
+- `url`: The URL of the WebNovel book or comic.
 - `-c, --cookies`: Path to the cookies JSON file (optional).
-- `-o, --output`: Output directory for the EPUB file (optional, default is the current directory).
+- `-o, --output`: Output directory for the EPUB or PDF file (optional, default is the current directory).
 
 ### Example
 
 ```sh
-python main.py https://www.webnovel.com/book/example-book -o /path/to/output/directory
+$ python main.py https://www.webnovel.com/book/example-book -o /path/to/output/directory
+```
+
+```sh
+$ python main.py https://www.webnovel.com/comic/example-comic -o /path/to/output/directory
 ```
 
 ## How to Get Cookies for Credentials
@@ -75,6 +80,6 @@ To get locked chapters, you need to provide your WebNovel session cookies. Using
 This will allow the scraper to use your session cookies and access any unlocked or paid chapters.
 
 ## NOTES: 
-1. The scraper stops automatically when it encounters the first locked chapter. As a result, any unlocked chapters appearing after a locked chapter will not be included in the EPUB.
+1. The scraper stops automatically when it encounters the first locked chapter. As a result, any unlocked chapters appearing after a locked chapter will not be included in the EPUB or PDF.
 
 1. It does not add Auxiliary Chapters.
