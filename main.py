@@ -1,4 +1,6 @@
 import argparse
+import json
+import os
 import re
 from ebooklib import epub
 import requests
@@ -6,14 +8,17 @@ from WebNovelScraper import WebNovelScraper
 from models import BookInfo, ChapterInfo
 
 
-def create_epub(book_info: BookInfo, chapters_info: list[ChapterInfo]):
+def create_epub(
+    book_info: BookInfo, chapters_info: list[ChapterInfo], output_path: str = "."
+):
     """
     Creates an EPUB file from the given book and chapters information.
     Args:
         book_info (BookInfo): An object containing metadata about the book, such as bookId, bookName, authorName, and bookCover.
         chapters_info (list[ChapterInfo]): A list of ChapterInfo objects, each containing metadata and content for a chapter.
+        output_path (str): The directory where the EPUB file will be saved.
     Returns:
-        None: The function writes the EPUB file to the current working directory.
+        None: The function writes the EPUB file to the specified directory.
     """
     book = epub.EpubBook()
 
@@ -60,22 +65,41 @@ def create_epub(book_info: BookInfo, chapters_info: list[ChapterInfo]):
     # Write to the file
     invalid_chars = r'[<>:"/\\|?*]'
     filename = re.sub(invalid_chars, "", book_info.bookName + ".epub").replace(" ", "_")
-    epub.write_epub(filename, book)
+    filepath = os.path.join(output_path, filename)
+    epub.write_epub(filepath, book)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Get book information from WebNovel.")
     parser.add_argument("url", type=str, help="The URL of the WebNovel book")
+    parser.add_argument(
+        "-c", "--cookies", type=str, help="Path to the cookies JSON file"
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default=".",
+        help="Output directory for the EPUB file",
+    )
+
     args = parser.parse_args()
 
-    scraper = WebNovelScraper(args.url)
+    cookies = {}
+    if args.cookies:
+        with open(args.cookies, "r") as f:
+            cookies = json.load(f)
+
+    scraper = WebNovelScraper(args.url, cookies=cookies)
     book_info = scraper.get_book_info()
     # chapters_info = list(scraper.get_all_chapters())
     chapters_info = []
+    print("Fetching chapters for: " + book_info.bookName)
     for chapter in scraper.get_all_chapters():
         chapters_info.append(chapter)
         print("fetched:", chapter.chapterName)
-    create_epub(book_info, chapters_info)
+
+    create_epub(book_info, chapters_info, output_path=args.output)
 
 
 if __name__ == "__main__":

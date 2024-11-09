@@ -3,3 +3,4 @@ beautifulsoup4
 ebooklib
 pydantic
 requests
+demjson3
