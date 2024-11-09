@@ -1,6 +1,6 @@
 # WebNovel Scraper Downloader
 
-This project scrapes unlocked chapters from [WebNovel](www.webnovel.com) and compiles them into an EPUB book or a PDF for comics.
+This project scrapes unlocked chapters from [WebNovel](https://www.webnovel.com) and compiles them into an EPUB book or a PDF for comics.
 
 ## Features
 
